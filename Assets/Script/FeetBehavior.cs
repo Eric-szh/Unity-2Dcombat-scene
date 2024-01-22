@@ -18,7 +18,7 @@ public class FeetBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Feet hit something!");
+        //Debug.Log("Feet hit something!");
         if ((collision.gameObject.tag == "Land"))
         {
             this.transform.parent.GetComponent<PlayerBehavior>().Land();
