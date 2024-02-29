@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,28 +6,53 @@ using UnityEngine;
 public class BossBehavior : MonoBehaviour
 {
 
-    public float speed = 1f;
-    // Start is called before the first frame update
-    void Start()
-    {
+    public const float speed = 5f;
+    public int facingDirection = 0;
+    public GameObject attackPoint;
 
+    public void TurnToPlayer()
+    {
+        GameObject player = GetComponent<BossStateMachine>().Player;
+        if (player.transform.position.x < this.transform.position.x)
+        {
+            this.GetComponent<BossBehavior>().SetFacingLeft();
+        }
+        else
+        {
+            this.GetComponent<BossBehavior>().SetFacingRight();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void MoveTo(Vector3 pos, float speed = speed)
     {
-        int xDirection = 0;
+        this.transform.position = Vector3.MoveTowards(this.transform.position, pos, speed * Time.deltaTime);
+    }
 
-        // use the left and right arrow keys to move the boss
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            xDirection = -1;
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            xDirection = 1;
-        }
+    private void AtkLeft()
+    {
+        this.attackPoint.transform.localPosition = new Vector3(Math.Abs(this.attackPoint.transform.localPosition.x) * -1, this.attackPoint.transform.localPosition.y, this.attackPoint.transform.localPosition.z);
+    }
 
-        this.transform.position = new Vector3(this.transform.position.x + this.speed * Time.deltaTime * xDirection, this.transform.position.y, this.transform.position.z);
+    private void AtkRight()
+    {
+        this.attackPoint.transform.localPosition = new Vector3(Math.Abs(this.attackPoint.transform.localPosition.x), this.attackPoint.transform.localPosition.y, this.attackPoint.transform.localPosition.z);
+    }
+
+    public void SetFacingLeft()
+    {
+        if (this.facingDirection == 1)
+        {
+            this.AtkLeft();
+            this.facingDirection = -1;
+        }
+    }
+
+    public void SetFacingRight()
+    {
+        if (this.facingDirection == -1)
+        {
+            this.AtkRight();
+            this.facingDirection = 1;
+        }
     }
 }

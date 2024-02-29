@@ -27,14 +27,14 @@ public class PlayerBehavior : MonoBehaviour
     bool in_air = false;
 
 
-    void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         this.health -= damage;
         healthBar.SetHealth(health);
         Debug.Log("took damage");
         if (health <=  0 )
         {
-            //die
+            //die, this is cute
             Debug.Log("died!!!!orz");
             this.GetComponent<Animator>().SetBool("player_died", true);
         }

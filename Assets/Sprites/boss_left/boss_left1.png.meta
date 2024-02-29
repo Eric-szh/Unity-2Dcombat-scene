@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 89711856cf499d94f9ee07b1087b90f8
+guid: 5641fa3ea9abdd548b2825f9885bdc24
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5639184011944677320
-    second: boss_vinesL13_0
+      213: -5844676815908166180
+    second: boss_left1_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -98,7 +98,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: boss_vinesL13_0
+      name: boss_left1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -106,14 +106,14 @@ TextureImporter:
         width: 512
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 566168234bdb40845a8f07b2db575ce7
-      internalID: -2075164135
+      spriteID: cd525d0076983eea0800000000000000
+      internalID: -5844676815908166180
       vertices: []
       indices: 
       edges: []
@@ -121,7 +121,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: d13fa72426323a34992be8a5c72b3947
+    spriteID: cb65d91644de1744b86b015a73dc1244
     internalID: 0
     vertices: []
     indices: 
@@ -129,7 +129,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      boss_vinesL13_0: -2075164135
+      boss_left1_0: -5844676815908166180
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

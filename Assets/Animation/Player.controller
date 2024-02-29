@@ -239,31 +239,31 @@ AnimatorStateMachine:
     m_Position: {x: 130, y: -20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1315498242474599821}
-    m_Position: {x: 450, y: 40, z: 0}
+    m_Position: {x: 450, y: 20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4473696770917332744}
     m_Position: {x: 450, y: -30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2921297726567492720}
-    m_Position: {x: 880, y: 50, z: 0}
+    m_Position: {x: 840, y: 20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 572400843454667735}
-    m_Position: {x: 840, y: -50, z: 0}
+    m_Position: {x: 840, y: -30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -707783483625470230}
-    m_Position: {x: 650, y: -150, z: 0}
+    m_Position: {x: 640, y: -90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5266993728368330008}
-    m_Position: {x: 660, y: 110, z: 0}
+    m_Position: {x: 640, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4249808735189185134}
-    m_Position: {x: 730, y: 270, z: 0}
+    m_Position: {x: 720, y: 150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3185928064118322938}
-    m_Position: {x: 710, y: -310, z: 0}
+    m_Position: {x: 720, y: -220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6727250069001125720}
-    m_Position: {x: 745, y: -245, z: 0}
+    m_Position: {x: 750, y: -170, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3905397389862645775}
     m_Position: {x: 1570, y: -160, z: 0}
@@ -352,31 +352,31 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: player_fly
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: jump_counter
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: player_dash
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: player_died
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer

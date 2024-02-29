@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!74 &7400000
+AnimationClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Vine
+  serializedVersion: 7
+  m_Legacy: 0
+  m_Compressed: 0
+  m_UseHighQualityCurve: 1
+  m_RotationCurves: []
+  m_CompressedRotationCurves: []
+  m_EulerCurves: []
+  m_PositionCurves: []
+  m_ScaleCurves: []
+  m_FloatCurves: []
+  m_PPtrCurves:
+  - serializedVersion: 2
+    curve:
+    - time: 0
+      value: {fileID: -839869381, guid: e9577d9de2b1a9c4c85590ee4dac3faf, type: 3}
+    - time: 0.083333336
+      value: {fileID: 6820197642610958532, guid: bfc3943d4f952bd40b2fc7d231f59310, type: 3}
+    - time: 0.16666667
+      value: {fileID: -8707279060241120071, guid: 2976173b2c3e7cd4488b901977e4d259, type: 3}
+    - time: 0.25
+      value: {fileID: -853162078, guid: 61aa7111fb0bae74c822fe6bfd2d7b07, type: 3}
+    - time: 0.33333334
+      value: {fileID: -1291343070, guid: c2b506b3b78fc38429cda43290d35e6b, type: 3}
+    - time: 0.41666666
+      value: {fileID: -620452702, guid: 2d93b75b1fefac54fb9591c3d539bc0d, type: 3}
+    - time: 0.5
+      value: {fileID: -1107119028, guid: 968605e316ef29b4b8324b8d9ab4db81, type: 3}
+    - time: 0.5833333
+      value: {fileID: -534221759, guid: 5ce9a4008b95f5a48bbf6071e62d4278, type: 3}
+    - time: 0.6666667
+      value: {fileID: 1041330658, guid: 29e3dea5db2d5364d9f22a96a26e172e, type: 3}
+    attribute: m_Sprite
+    path: 
+    classID: 212
+    script: {fileID: 0}
+    flags: 2
+  m_SampleRate: 12
+  m_WrapMode: 0
+  m_Bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_ClipBindingConstant:
+    genericBindings:
+    - serializedVersion: 2
+      path: 0
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    pptrCurveMapping:
+    - {fileID: -839869381, guid: e9577d9de2b1a9c4c85590ee4dac3faf, type: 3}
+    - {fileID: 6820197642610958532, guid: bfc3943d4f952bd40b2fc7d231f59310, type: 3}
+    - {fileID: -8707279060241120071, guid: 2976173b2c3e7cd4488b901977e4d259, type: 3}
+    - {fileID: -853162078, guid: 61aa7111fb0bae74c822fe6bfd2d7b07, type: 3}
+    - {fileID: -1291343070, guid: c2b506b3b78fc38429cda43290d35e6b, type: 3}
+    - {fileID: -620452702, guid: 2d93b75b1fefac54fb9591c3d539bc0d, type: 3}
+    - {fileID: -1107119028, guid: 968605e316ef29b4b8324b8d9ab4db81, type: 3}
+    - {fileID: -534221759, guid: 5ce9a4008b95f5a48bbf6071e62d4278, type: 3}
+    - {fileID: 1041330658, guid: 29e3dea5db2d5364d9f22a96a26e172e, type: 3}
+  m_AnimationClipSettings:
+    serializedVersion: 2
+    m_AdditiveReferencePoseClip: {fileID: 0}
+    m_AdditiveReferencePoseTime: 0
+    m_StartTime: 0
+    m_StopTime: 0.75
+    m_OrientationOffsetY: 0
+    m_Level: 0
+    m_CycleOffset: 0
+    m_HasAdditiveReferencePose: 0
+    m_LoopTime: 1
+    m_LoopBlend: 0
+    m_LoopBlendOrientation: 0
+    m_LoopBlendPositionY: 0
+    m_LoopBlendPositionXZ: 0
+    m_KeepOriginalOrientation: 0
+    m_KeepOriginalPositionY: 1
+    m_KeepOriginalPositionXZ: 0
+    m_HeightFromFeet: 0
+    m_Mirror: 0
+  m_EditorCurves: []
+  m_EulerEditorCurves: []
+  m_HasGenericRootTransform: 0
+  m_HasMotionFloatCurves: 0
+  m_Events:
+  - time: 0.75
+    functionName: DisableVine
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
