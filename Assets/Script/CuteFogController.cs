@@ -5,6 +5,7 @@ using UnityEngine;
 public class CuteFogController : MonoBehaviour
 {
     float opacity = 0;
+    float maximumOpacity = 0.7f;
     float fogAppearTime = 1f;
     float fogPresistTime = 5f;
 
@@ -19,7 +20,7 @@ public class CuteFogController : MonoBehaviour
     IEnumerator FogAppear()
     {
         float fogAppearDelay = fogAppearTime / 100;
-        while (this.opacity < 1) {
+        while (this.opacity < maximumOpacity) {
             this.opacity += 0.01f;
             GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, opacity);
             // Debug.Log("Fog Appearing " + opacity);
@@ -52,8 +53,10 @@ public class CuteFogController : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerBehavior>().TakeDamage(1);
+            other.gameObject.GetComponent<PlayerBehavior>().TakeDamage(1,0);
             Debug.Log("Fog HitPlayer");
+            // slow the player
+            other.gameObject.GetComponent<PlayerBehavior>().SlowDown();
         }
     }
 }

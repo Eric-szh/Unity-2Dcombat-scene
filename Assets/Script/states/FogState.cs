@@ -8,6 +8,7 @@ public class FogState : State
     public float fogHeight = 0.5f;
     public float chargeSpeed = 7f;
     public float foggingTime= 3f;
+    public float devationRange = 0.02f;
 
     private Vector2 chargePoint;
 
@@ -47,8 +48,11 @@ public class FogState : State
     public void FogAppear()
     {
         Transform localPosition = this.GetComponent<Transform>();
-        Vector2 fogPosition = new Vector2(localPosition.position.x, localPosition.position.y + fogHeight);
-        Instantiate(fog, fogPosition, localPosition.rotation);
+        float xDivation = Random.Range(-this.devationRange, this.devationRange);
+        float yDivation = Random.Range(-this.devationRange, this.devationRange);
+        Vector2 fogPosition = new Vector2(localPosition.position.x + xDivation, localPosition.position.y + fogHeight + yDivation );
+        Quaternion randomRotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
+        Instantiate(fog, fogPosition, randomRotation);
     }
 
     public void OnDrawGizmosSelected()

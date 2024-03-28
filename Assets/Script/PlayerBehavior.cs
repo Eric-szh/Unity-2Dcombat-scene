@@ -7,7 +7,9 @@ using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
-    
+    int xDirection = 0;
+    int facingDirection = 0;
+
     public float speed = 4f;
     public float jumpForce = 12f;
 
@@ -21,13 +23,30 @@ public class PlayerBehavior : MonoBehaviour
     int maxDashes = 1;
     int availableDashes = 1;
 
-    public float dashDistance = 10f; 
+    public float dashDistance = 10f;
     public float dashTime = 0.4f;
     bool isDashing;
     bool in_air = false;
 
+    bool paralyzed = false;
+    bool invincible = false;
 
-    public void TakeDamage(int damage)
+    float slowAmount = 0.5f;
+    float slowTime = 2f;
+    bool slowed = false;
+    bool entangled = false;
+
+    bool isAttacking = false;
+    public Vector3 attackDeviation;
+    public float attackRange;
+    public int attackDamage = 10;
+
+    public void AttackInterrpution()
+    {
+        this.isAttacking = false;
+    }
+
+    public void TakeDamage(int damage, float paralyze_time = 0.2f)
     {
         this.health -= damage;
         healthBar.SetHealth(health);
@@ -38,17 +57,69 @@ public class PlayerBehavior : MonoBehaviour
             Debug.Log("died!!!!orz");
             this.GetComponent<Animator>().SetBool("player_died", true);
         }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if ((collision.gameObject.tag == "Boss"))
+        if (!this.invincible)
         {
-            //Debug.Log("hitboss");
-            TakeDamage(30);
+            this.StartParalyze(paralyze_time);
+            this.StartInvincible(1f);
         }
 
+    }
 
+    void StartParalyze(float paralyze_time)
+    {
+        this.paralyzed = true;
+        Invoke("Unparalyze", paralyze_time);
+    }
+
+    void StartInvincible(float invincible_time)
+    {
+        this.invincible = true;
+        // put player in another layer
+        this.gameObject.layer = 11;
+        StartCoroutine(this.flashing());
+        Invoke("Uninvincible", invincible_time);
+    }
+
+    // flashing effect when player is paralyzed
+    IEnumerator flashing()
+    {
+        while (this.invincible)
+        {
+            // turn the sprite transparent
+            var colorTemp = GetComponent<SpriteRenderer>().color;
+            colorTemp.a = 0.5f;
+            GetComponent<SpriteRenderer>().color = colorTemp;
+            yield return new WaitForSeconds(0.1f);
+            GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    private void Uninvincible()
+    {
+        CancelInvoke("Uninvincible");
+        this.invincible = false;
+        // put player back to the original layer
+        this.gameObject.layer = 10;
+    }
+
+    private void Unparalyze()
+    {
+        CancelInvoke("Unparalyze");
+        this.paralyzed = false;
+    }
+
+    // when entangled, it will interrut the current animation!! and play the entangled animation
+    public void Entangle()
+    {
+        this.entangled = true;
+        GetComponent<PlayerAniController>().ChangeAnimationState("Player_restrained");
+    }
+
+    public void Unentangle()
+    {
+        this.entangled = false;
     }
 
 
@@ -63,33 +134,38 @@ public class PlayerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int xDirection = 0;
+        this.xDirection = 0;
 
-        //if (!isDashing)
         {
             if (Input.GetKey("a"))
             {
-                xDirection = -1;
+                this.xDirection = -1;
+                this.facingDirection = -1;
+                this.attackDeviation = new Vector3(Math.Abs(this.attackDeviation.x) * -1, this.attackDeviation.y, this.attackDeviation.z);
             }
             if (Input.GetKey("d"))
             {
-                xDirection = 1;
+                this.xDirection = 1;
+                this.facingDirection = 1;
+                this.attackDeviation = new Vector3(Math.Abs(this.attackDeviation.x), this.attackDeviation.y, this.attackDeviation.z);
             }
         }
 
 
-
-        this.transform.position = new Vector3(this.transform.position.x + this.speed * Time.deltaTime * xDirection, this.transform.position.y, this.transform.position.z);
-        // update velocity in animator
-        this.GetComponent<Animator>().SetFloat("player_velocity", xDirection);
+        // movement
+        if (!this.paralyzed)
+        {
+            this.transform.position = new Vector3(this.transform.position.x + this.speed * Time.deltaTime * xDirection, this.transform.position.y, this.transform.position.z);
+        }
 
         //jumping
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKeyDown("space") && !this.paralyzed)
         {
             if (this.availableJumps > 0)
             {   
                 in_air = true;
-                this.GetComponent<Animator>().SetBool("player_dash", false);
+                this.PlayDirBased("Player_jumpL", "Player_jumpR", true);
+
                 //resets the gravity if the player is currently dashing
                 this.GetComponent<Rigidbody2D>().gravityScale = 3;
                 // make the players falling speed 0
@@ -101,21 +177,85 @@ public class PlayerBehavior : MonoBehaviour
 
 
                 this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, this.jumpForce), ForceMode2D.Impulse);
-                this.GetComponent<Animator>().SetBool("player_fly", true);
             }
         }
 
         //dashing
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !this.paralyzed)
         {
             if (this.availableDashes > 0)
             {
+                this.PlayDirBased("Player_dashL", "Player_dashR");
                 StartCoroutine(Dash(xDirection));
                 if (in_air)
                     this.availableDashes--;
             }
             
         }
+
+        //attacking
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !this.paralyzed)
+        {
+            if (!isAttacking)
+            {
+                this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_attack");
+                isAttacking = true;
+                this.PlayDirBased("Player_slashL", "Player_slashR");
+            }
+        }
+
+        // animation stuff
+        if (this.in_air == false && this.isDashing == false && this.entangled == false && this.isAttacking == false && this.paralyzed == false)
+        {
+            if(xDirection == 1)
+            {
+                this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_right");
+            } else if (xDirection == -1)
+            {
+                this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_left");
+            }
+            else
+            {
+                this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_idle");
+            }
+            
+        }
+        // Debug.Log("in_air: " + in_air);
+        // Debug.Log("isDashing: " + isDashing);
+        // Debug.Log("entangled: " + entangled);
+        // Debug.Log("isAttacking: " + isAttacking);
+
+    }
+
+    private void PlayDirBased(string leftAnimation, string rightAnimation, bool forced = false)
+    {
+        if(this.facingDirection == -1)
+        {
+            this.GetComponent<PlayerAniController>().ChangeAnimationState(leftAnimation, forced);
+        }
+        else
+        {
+            this.GetComponent<PlayerAniController>().ChangeAnimationState(rightAnimation, forced);
+        }
+        
+    }
+
+    public void Attack()
+    {
+        Vector3 attackPoint = this.transform.position + this.attackDeviation;
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint, this.attackRange);
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if (enemy.tag == "Boss")
+            {
+                enemy.GetComponent<BossBehavior>().TakeDamage(this.attackDamage);
+            }
+        }
+    }
+
+    public void AttackEnd()
+    {
+        isAttacking = false;
     }
 
     public void Land() { 
@@ -123,16 +263,12 @@ public class PlayerBehavior : MonoBehaviour
         this.availableJumps = this.maxJumps;
         this.availableDashes = this.maxDashes;
 
-        this.GetComponent<Animator>().SetBool("player_fly", false);
         // Debug.Log("Player landed");
         float jump_counter = this.availableJumps;
-        this.GetComponent<Animator>().SetFloat("jump_counter", jump_counter);
-
     }
     IEnumerator Dash(float Direction) {
         
         isDashing = true;
-        this.GetComponent<Animator>().SetBool("player_dash", true);
         // make the players falling speed 0
         this.GetComponent<Rigidbody2D>().velocity = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x, 0);
         //dash
@@ -144,8 +280,45 @@ public class PlayerBehavior : MonoBehaviour
 
         yield return new WaitForSeconds(dashTime);
         isDashing = false;
-        this.GetComponent<Animator>().SetBool("player_dash", false);
         this.GetComponent<Rigidbody2D>().gravityScale = gravity;
         this.GetComponent<Rigidbody2D>().velocity = new Vector2(0, this.GetComponent<Rigidbody2D>().velocity.y);
+    }
+
+    public void SlowDown()
+    {
+        if (slowed)
+        {
+            CancelInvoke("Unslow");
+            Invoke("Unslow", slowTime);
+        } else
+        {   
+            this.slowed = true;
+            this.speed *= slowAmount;
+            Invoke("Unslow", slowTime);
+        }
+
+        // turn the sprite purple
+        GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 1f);
+    }
+
+    private void Unslow()
+    {
+        this.speed /= slowAmount;
+        CancelInvoke("Unslow");
+        this.slowed = false;
+        // turn the sprite back to normal
+        GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (this.attackDeviation == null)
+        {
+            return;
+        }
+
+        Vector3 attackPoint = this.transform.position + this.attackDeviation;
+
+        Gizmos.DrawWireSphere(attackPoint, this.attackRange);
     }
 }

@@ -42,7 +42,7 @@ public class ChaseState : State
         float distance = Vector3.Distance(player.transform.position, this.transform.position);
         if (distance < attackDistance)
         {
-            this._stateMachine.ChangeState<MeleeState>();
+            this._stateMachine.ChangeState<MReadyState>();
         }
     }
 

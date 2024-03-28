@@ -12,7 +12,7 @@ public class BossStateMachine : MonoBehaviour
 
     private void Start()
     {
-        this.ChangeState<DecideState>();
+        this.ChangeState<WaitState>();
     }
 
     public void ChangeState<T>() where T : State 

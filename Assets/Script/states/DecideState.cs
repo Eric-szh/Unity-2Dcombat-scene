@@ -34,7 +34,7 @@ public class DecideState : State
         float distance = Vector3.Distance(player.transform.position, this.transform.position);
         if (Random.Range(0, 100) < fogRatio)
         {
-            this._stateMachine.ChangeState<FogState>();
+            this._stateMachine.ChangeState<PrepareFogState>();
             this.lastRanged = false;
         }
         else if (distance < chaseThreshold || lastRanged || distance > rangedThreshold)

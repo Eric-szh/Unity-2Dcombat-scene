@@ -6,9 +6,13 @@ using UnityEngine;
 public class BossBehavior : MonoBehaviour
 {
 
-    public const float speed = 5f;
+    public const float speed = 4f;
     public int facingDirection = 0;
     public GameObject attackPoint;
+    public float pushForce = 100f;
+    public int contactDamage = 20;
+
+    public int Health = 100;
 
     public void TurnToPlayer()
     {
@@ -25,7 +29,16 @@ public class BossBehavior : MonoBehaviour
 
     public void MoveTo(Vector3 pos, float speed = speed)
     {
-        this.transform.position = Vector3.MoveTowards(this.transform.position, pos, speed * Time.deltaTime);
+        Vector3 newPos = new Vector3(pos.x, this.transform.position.y, this.transform.position.z);
+        this.transform.position = Vector3.MoveTowards(this.transform.position, newPos, speed * Time.deltaTime);
+    }
+
+    public void PushPlayerAway(Vector3 orignalPoint, float upForce = 1.2f, float awayForce = 0.5f)
+    {
+        GameObject player = GetComponent<BossStateMachine>().Player;
+        Vector3 pushDir = (player.transform.position - orignalPoint).normalized;  
+        Vector2 pushDir2 = new Vector2(Math.Sign(pushDir.x) * awayForce, upForce);
+        player.GetComponent<Rigidbody2D>().velocity  = pushDir2 * pushForce;
     }
 
     private void AtkLeft()
@@ -55,4 +68,47 @@ public class BossBehavior : MonoBehaviour
             this.facingDirection = 1;
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            this.PushPlayerAway(collision.contacts[0].point);
+            collision.gameObject.GetComponent<PlayerBehavior>().TakeDamage(contactDamage);
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        this.Health -= damage;
+        Debug.Log("Boss took " + damage + " damage");
+        if (this.Health <= 0)
+        {
+            Debug.Log("Boss is dead");
+        }
+        else
+        {
+            Flash();
+        }
+
+    }
+
+    // quickly flash to indicate damage
+    public void Flash()
+    {
+        StartCoroutine(FlashCoroutine());
+    }
+
+    private IEnumerator FlashCoroutine()
+    {
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        for (int i = 0; i < 1; i++)
+        {
+            sprite.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            sprite.color = Color.white;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 }
+

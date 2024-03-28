@@ -55,7 +55,9 @@ public class MeleeState : State
         if (playerHit != null)
         {
             playerHit.GetComponent<PlayerBehavior>().TakeDamage(30);
+            GetComponent<BossBehavior>().PushPlayerAway(attackPoint.transform.position, 0.7f, 1f);
         }
+        
     }
 
     // the calling of the leave is done in the animation clips
