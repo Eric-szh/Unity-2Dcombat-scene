@@ -13,6 +13,12 @@ public class BossBehavior : MonoBehaviour
     public int contactDamage = 20;
 
     public int Health = 100;
+    public int maxHealth = 100;
+
+    private bool secondPhase = false;
+    private bool isDead = false;
+
+    public GameObject gameController;
 
     public void TurnToPlayer()
     {
@@ -38,7 +44,10 @@ public class BossBehavior : MonoBehaviour
         GameObject player = GetComponent<BossStateMachine>().Player;
         Vector3 pushDir = (player.transform.position - orignalPoint).normalized;  
         Vector2 pushDir2 = new Vector2(Math.Sign(pushDir.x) * awayForce, upForce);
-        player.GetComponent<Rigidbody2D>().velocity  = pushDir2 * pushForce;
+        if (!player.GetComponent<PlayerBehavior>().death)
+        {
+            player.GetComponent<Rigidbody2D>().velocity = pushDir2 * pushForce;
+        }
     }
 
     private void AtkLeft()
@@ -80,15 +89,26 @@ public class BossBehavior : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (isDead)
+        {
+            return;
+        }
+
         this.Health -= damage;
         Debug.Log("Boss took " + damage + " damage");
         if (this.Health <= 0)
         {
-            Debug.Log("Boss is dead");
+            this.GetComponent<BossStateMachine>().ChangeState<DeathState>();
+            isDead = true;
         }
         else
         {
             Flash();
+            if (this.Health <= this.maxHealth * 0.4 && !secondPhase)
+            {
+                GameObject.Find("BudController").GetComponent<BudController>().SpawnBud();
+                secondPhase = true;
+            }
         }
 
     }

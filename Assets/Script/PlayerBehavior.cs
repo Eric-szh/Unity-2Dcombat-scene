@@ -35,27 +35,39 @@ public class PlayerBehavior : MonoBehaviour
     float slowTime = 2f;
     bool slowed = false;
     bool entangled = false;
+    bool bloomed = false;
+    public bool death = false;
 
     bool isAttacking = false;
     public Vector3 attackDeviation;
     public float attackRange;
     public int attackDamage = 10;
 
+    public GameObject gameController;
+
     public void AttackInterrpution()
     {
         this.isAttacking = false;
     }
 
-    public void TakeDamage(int damage, float paralyze_time = 0.2f)
+    public void TakeDamage(int damage, float paralyze_time = 0.2f, bool ignoreInv = false)
     {
+
+        if (this.invincible && !ignoreInv && this.death)
+        {
+            return;
+        }
+
         this.health -= damage;
         healthBar.SetHealth(health);
-        Debug.Log("took damage");
-        if (health <=  0 )
+        // Debug.Log("took damage");
+        if (health <=  0 && !death)
         {
             //die, this is cute
             Debug.Log("died!!!!orz");
-            this.GetComponent<Animator>().SetBool("player_died", true);
+            this.PlayDirBased("Player_deathL", "Player_deathR", true);
+            this.death = true;
+            this.invincible = true;
         }
 
         if (!this.invincible)
@@ -65,6 +77,7 @@ public class PlayerBehavior : MonoBehaviour
         }
 
     }
+
 
     void StartParalyze(float paralyze_time)
     {
@@ -91,7 +104,8 @@ public class PlayerBehavior : MonoBehaviour
             colorTemp.a = 0.5f;
             GetComponent<SpriteRenderer>().color = colorTemp;
             yield return new WaitForSeconds(0.1f);
-            GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+            colorTemp.a = 1f;
+            GetComponent<SpriteRenderer>().color = colorTemp;
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -113,8 +127,12 @@ public class PlayerBehavior : MonoBehaviour
     // when entangled, it will interrut the current animation!! and play the entangled animation
     public void Entangle()
     {
-        this.entangled = true;
-        GetComponent<PlayerAniController>().ChangeAnimationState("Player_restrained");
+        if (!invincible)
+        {
+            this.entangled = true;
+            GetComponent<PlayerAniController>().ChangeAnimationState("Player_restrained");
+        }
+        
     }
 
     public void Unentangle()
@@ -134,21 +152,24 @@ public class PlayerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+        if (death)
+        {
+            return;
+        }
+
         this.xDirection = 0;
 
         {
-            if (Input.GetKey("a"))
+            // Debug.Log(Input.GetAxis("Horizontal"));
+            this.xDirection = (int) Input.GetAxis("Horizontal");
+            if (this.xDirection != 0)
             {
-                this.xDirection = -1;
-                this.facingDirection = -1;
-                this.attackDeviation = new Vector3(Math.Abs(this.attackDeviation.x) * -1, this.attackDeviation.y, this.attackDeviation.z);
+                this.facingDirection = (int)Input.GetAxis("Horizontal");
+                this.attackDeviation = new Vector3(Math.Abs(this.attackDeviation.x) * this.facingDirection, this.attackDeviation.y, this.attackDeviation.z);
             }
-            if (Input.GetKey("d"))
-            {
-                this.xDirection = 1;
-                this.facingDirection = 1;
-                this.attackDeviation = new Vector3(Math.Abs(this.attackDeviation.x), this.attackDeviation.y, this.attackDeviation.z);
-            }
+
         }
 
 
@@ -159,7 +180,7 @@ public class PlayerBehavior : MonoBehaviour
         }
 
         //jumping
-        if (Input.GetKeyDown("space") && !this.paralyzed)
+        if (Input.GetButtonDown("Jump") && !this.paralyzed)
         {
             if (this.availableJumps > 0)
             {   
@@ -179,9 +200,12 @@ public class PlayerBehavior : MonoBehaviour
                 this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, this.jumpForce), ForceMode2D.Impulse);
             }
         }
+        
+        // Debug.Log(Input.GetAxis("Dash"));
+        Debug.Log(Input.GetAxis("Dash"));
 
         //dashing
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !this.paralyzed)
+        if (Input.GetButtonDown("Dash") && !this.paralyzed)
         {
             if (this.availableDashes > 0)
             {
@@ -194,18 +218,27 @@ public class PlayerBehavior : MonoBehaviour
         }
 
         //attacking
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !this.paralyzed)
+        if (Input.GetButtonDown("Attack") && !this.paralyzed)
         {
             if (!isAttacking)
             {
-                this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_attack");
                 isAttacking = true;
                 this.PlayDirBased("Player_slashL", "Player_slashR");
             }
         }
 
+        if (Input.GetButtonDown("Ult") && !this.paralyzed)
+        {
+            GameObject.Find("Amulet").GetComponent<AmuletController>().Use();
+            this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_bloom");
+            this.bloomed = true;
+            this.invincible = true;
+            
+
+        }
+
         // animation stuff
-        if (this.in_air == false && this.isDashing == false && this.entangled == false && this.isAttacking == false && this.paralyzed == false)
+        if (!in_air && !isDashing && !entangled && !isAttacking && !bloomed && !paralyzed)
         {
             if(xDirection == 1)
             {
@@ -220,10 +253,6 @@ public class PlayerBehavior : MonoBehaviour
             }
             
         }
-        // Debug.Log("in_air: " + in_air);
-        // Debug.Log("isDashing: " + isDashing);
-        // Debug.Log("entangled: " + entangled);
-        // Debug.Log("isAttacking: " + isAttacking);
 
     }
 
@@ -238,6 +267,11 @@ public class PlayerBehavior : MonoBehaviour
             this.GetComponent<PlayerAniController>().ChangeAnimationState(rightAnimation, forced);
         }
         
+    }
+
+    public void Lighten()
+    {
+        this.gameController.GetComponent<GameController>().Lighten();
     }
 
     public void Attack()
@@ -256,6 +290,17 @@ public class PlayerBehavior : MonoBehaviour
     public void AttackEnd()
     {
         isAttacking = false;
+    }
+
+    public void BloomEnd()
+    {
+        this.bloomed = false;
+        this.invincible = false;
+    }
+    public void DeathEnd()
+    {
+        this.gameController.GetComponent<GameController>().LoseGame();
+        GetComponent<PlayerAniController>().ChangeAnimationState("Player_dead");
     }
 
     public void Land() { 

@@ -35,7 +35,7 @@ public class VineController : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerBehavior>().TakeDamage(20);
+            other.gameObject.GetComponent<PlayerBehavior>().TakeDamage(20, 1);
             other.gameObject.GetComponent<PlayerBehavior>().Entangle();
             Debug.Log("Ranged HitPlayer");
         }

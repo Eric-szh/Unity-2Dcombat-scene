@@ -8,19 +8,21 @@ public class DecideState : State
     public float waitTime;
     public float rangedThreshold;
     public int fogRatio;
+    public GameObject budController;
 
     private bool lastRanged = false;
 
 
     public override void Enter()
     {
+        Debug.Log("Decide");
         GetComponent<BossAniController>().ChangeAnimationState("Boss_idle");
         Invoke("Decide", waitTime);
     }
 
     public override void Exit()
     {
-        return;
+        CancelInvoke("Decide");
     }
 
     public override void Tick()
@@ -30,9 +32,16 @@ public class DecideState : State
 
     private void Decide()
     {
+        Debug.Log("Deciding");
         GameObject player = this._stateMachine.Player;
         float distance = Vector3.Distance(player.transform.position, this.transform.position);
-        if (Random.Range(0, 100) < fogRatio)
+        if (budController.GetComponent<BudController>().ultReady)
+        {
+            this._stateMachine.ChangeState<UltState>();
+            budController.GetComponent<BudController>().ultReady = false;
+            this.lastRanged = false;
+        }
+        else if (Random.Range(0, 100) < fogRatio)
         {
             this._stateMachine.ChangeState<PrepareFogState>();
             this.lastRanged = false;

@@ -5,9 +5,11 @@ using UnityEngine;
 public abstract class State : MonoBehaviour
 {
     protected BossStateMachine _stateMachine;
+    public bool canExit;
 
-    private void Awake()
+    protected virtual void Awake()
     {
+        canExit = true;
         _stateMachine = GetComponent<BossStateMachine>();
     }
 

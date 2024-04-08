@@ -15,7 +15,7 @@ public class MeleeState : State
 
     public override void Enter()
     {
-        
+        Debug.Log("Melee State");
         if (GetComponent<BossBehavior>().facingDirection == 1)
         {
             GetComponent<BossAniController>().ChangeAnimationState("Boss_slashR");
@@ -49,7 +49,7 @@ public class MeleeState : State
     // the calling of the attack is done in the animation clips
     private void Attack()
     {
-        Debug.Log("Attacking");
+        // Debug.Log("Attacking");
         Collider2D playerHit = Physics2D.OverlapCircle(attackPoint.transform.position, attackRange, playerLayer);
         // Debug.Log(playerHit);
         if (playerHit != null)

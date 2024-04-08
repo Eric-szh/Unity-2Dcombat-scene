@@ -23,7 +23,14 @@ public class BossStateMachine : MonoBehaviour
             Debug.LogError("New state is null");
             return;
         }
-        InitNewState(newState);
+        if (_currentState == null || _currentState.canExit)
+        {
+            InitNewState(newState);
+        } else
+        {
+            Debug.LogWarning("Cannot exit current state" + _currentState);
+            return;
+        }
 
     }
 

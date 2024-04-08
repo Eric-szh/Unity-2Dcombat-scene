@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class BackGroundBehavior : MonoBehaviour
     public float parallaxFactor = 0.5f;
     private Vector2 startCameraPos;
     private Vector2 startBackGroundPos;
+    public bool verParallax = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +25,16 @@ public class BackGroundBehavior : MonoBehaviour
         float deltaX = caremaTransform.position.x - startCameraPos.x;
         float deltaY = caremaTransform.position.y - startCameraPos.y;
         float newX = startBackGroundPos.x + deltaX * parallaxFactor;
-        float newY = startBackGroundPos.y + deltaY * parallaxFactor;
+        float newY;
+        if (verParallax)
+        {
+            newY = startBackGroundPos.y + deltaY * parallaxFactor;
+        }
+        else
+        {
+            newY = this.transform.position.y;
+        }
+
         this.transform.position = new Vector3(newX, newY, this.transform.position.z);
     }
 }
