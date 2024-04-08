@@ -128,7 +128,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      sun_trinke_animation4_0: 7044053343612911160
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

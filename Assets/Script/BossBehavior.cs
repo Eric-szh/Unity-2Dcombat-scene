@@ -9,11 +9,11 @@ public class BossBehavior : MonoBehaviour
     public const float speed = 4f;
     public int facingDirection = 0;
     public GameObject attackPoint;
-    public float pushForce = 100f;
+    public float pushForce = 50f;
     public int contactDamage = 20;
 
-    public int Health = 100;
-    public int maxHealth = 100;
+    public int Health = 200;
+    public int maxHealth = 200;
 
     private bool secondPhase = false;
     private bool isDead = false;
@@ -104,7 +104,7 @@ public class BossBehavior : MonoBehaviour
         else
         {
             Flash();
-            if (this.Health <= this.maxHealth * 0.4 && !secondPhase)
+            if (this.Health <= this.maxHealth * 0.6 && !secondPhase)
             {
                 GameObject.Find("BudController").GetComponent<BudController>().SpawnBud();
                 secondPhase = true;

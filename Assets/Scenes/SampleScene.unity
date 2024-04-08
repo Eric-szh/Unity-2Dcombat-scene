@@ -2401,8 +2401,8 @@ MonoBehaviour:
   attackPoint: {fileID: 323484731}
   pushForce: 10
   contactDamage: 20
-  Health: 100
-  maxHealth: 100
+  Health: 250
+  maxHealth: 250
   gameController: {fileID: 765808609}
 --- !u!114 &994701935
 MonoBehaviour:
@@ -2455,7 +2455,7 @@ MonoBehaviour:
   chaseThreshold: 8
   waitTime: 0.7
   rangedThreshold: 15
-  fogRatio: 30
+  fogRatio: 20
   budController: {fileID: 1558375656}
 --- !u!114 &994701938
 MonoBehaviour:

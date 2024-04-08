@@ -73,7 +73,7 @@ public class PlayerBehavior : MonoBehaviour
         if (!this.invincible)
         {
             this.StartParalyze(paralyze_time);
-            this.StartInvincible(1f);
+            this.StartInvincible(3f);
         }
 
     }

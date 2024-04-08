@@ -22,7 +22,7 @@ public class BudController : MonoBehaviour
             Vector2 position = new Vector2(Random.Range(leftBound, rightBound), groundLevel);
             Instantiate(bud, position, Quaternion.identity);
             budLeft--;
-            float time = Random.Range(10.0f, 20.0f);
+            float time = Random.Range(5.0f, 10.0f);
             Invoke("SpawnBud", time);
         }
         else
