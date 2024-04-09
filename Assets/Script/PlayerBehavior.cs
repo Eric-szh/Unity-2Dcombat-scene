@@ -50,7 +50,7 @@ public class PlayerBehavior : MonoBehaviour
         this.isAttacking = false;
     }
 
-    public void TakeDamage(int damage, float paralyze_time = 0.2f, bool ignoreInv = false)
+    public void TakeDamage(int damage, float paralyze_time = 0.2f, bool ignoreInv = false, float invincible_time = 3f)
     {
 
         if (this.invincible && !ignoreInv && this.death)
@@ -73,7 +73,10 @@ public class PlayerBehavior : MonoBehaviour
         if (!this.invincible)
         {
             this.StartParalyze(paralyze_time);
-            this.StartInvincible(3f);
+            if (invincible_time > 0)
+            {
+                this.StartInvincible(invincible_time);
+            }
         }
 
     }
@@ -104,8 +107,9 @@ public class PlayerBehavior : MonoBehaviour
             colorTemp.a = 0.5f;
             GetComponent<SpriteRenderer>().color = colorTemp;
             yield return new WaitForSeconds(0.1f);
-            colorTemp.a = 1f;
-            GetComponent<SpriteRenderer>().color = colorTemp;
+            var colorTempAgain = GetComponent<SpriteRenderer>().color;
+            colorTempAgain.a = 1f;
+            GetComponent<SpriteRenderer>().color = colorTempAgain;
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -159,6 +163,12 @@ public class PlayerBehavior : MonoBehaviour
             return;
         }
 
+        // color fix
+        if (!slowed && !invincible && GetComponent<SpriteRenderer>().color != new Color(1f, 1f, 1f))
+        {
+            GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+        }
+
         this.xDirection = 0;
 
         {
@@ -202,7 +212,7 @@ public class PlayerBehavior : MonoBehaviour
         }
         
         // Debug.Log(Input.GetAxis("Dash"));
-        Debug.Log(Input.GetAxis("Dash"));
+        // Debug.Log(Input.GetAxis("Dash"));
 
         //dashing
         if (Input.GetButtonDown("Dash") && !this.paralyzed)
@@ -229,10 +239,15 @@ public class PlayerBehavior : MonoBehaviour
 
         if (Input.GetButtonDown("Ult") && !this.paralyzed)
         {
-            GameObject.Find("Amulet").GetComponent<AmuletController>().Use();
-            this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_bloom");
-            this.bloomed = true;
-            this.invincible = true;
+            GameObject amulet = GameObject.Find("Amulet");
+            int charges = amulet.GetComponent<AmuletController>().currentState;
+            if (charges == 4)
+            {
+                amulet.GetComponent<AmuletController>().Use();
+                this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_bloom");
+                this.bloomed = true;
+                this.invincible = true;
+            }
             
 
         }
@@ -283,6 +298,7 @@ public class PlayerBehavior : MonoBehaviour
             if (enemy.tag == "Boss")
             {
                 enemy.GetComponent<BossBehavior>().TakeDamage(this.attackDamage);
+                return;
             }
         }
     }

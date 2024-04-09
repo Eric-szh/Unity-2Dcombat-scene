@@ -54,7 +54,7 @@ public class CuteFogController : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             other.gameObject.GetComponent<PlayerBehavior>().SlowDown();
-            other.gameObject.GetComponent<PlayerBehavior>().TakeDamage(1,0,true);
+            other.gameObject.GetComponent<PlayerBehavior>().TakeDamage(1, 0, true, 1);
             Debug.Log("Fog HitPlayer");
             // slow the player
             

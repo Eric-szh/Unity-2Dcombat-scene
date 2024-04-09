@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AmuletController : MonoBehaviour
 {
-    int currentState = 0;    
+    public int currentState = 0;    
     
     // Start is called before the first frame update
     void Start()

@@ -815,7 +815,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 1929685790754269422, guid: dfd208177aa95c64c9c1271c70576037, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1142,6 +1142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e169237fddf1ea4fada7c869df27366, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
 --- !u!114 &593370045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1260,13 +1261,13 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d1bcf209ec482e248986babf461844f1, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.4
+  m_Volume: 0.268
   m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 123
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -1731,6 +1732,7 @@ MonoBehaviour:
   DarkenTime: 1
   LightenTime: 0.8
   MaximumOpacity: 0.7
+  DotInterval: 0.1
 --- !u!1 &852194502
 GameObject:
   m_ObjectHideFlags: 0
@@ -1970,7 +1972,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 20
   m_Sprite: {fileID: -909663883, guid: 8c9cc49bf13719e429e840b9c550cc24, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2209,6 +2211,7 @@ GameObject:
   - component: {fileID: 994701931}
   - component: {fileID: 994701930}
   - component: {fileID: 994701929}
+  - component: {fileID: 994701948}
   - component: {fileID: 994701933}
   - component: {fileID: 994701939}
   - component: {fileID: 994701934}
@@ -2334,7 +2337,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: -59774941366129349, guid: e62d5e0a3e4124349862037caca640ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2455,8 +2458,11 @@ MonoBehaviour:
   chaseThreshold: 8
   waitTime: 0.7
   rangedThreshold: 15
-  fogRatio: 20
+  fogRatio: 25
+  hardRatio: 60
   budController: {fileID: 1558375656}
+  maxMiss: 3
+  minMiss: 1
 --- !u!114 &994701938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2583,6 +2589,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canExit: 0
+--- !u!70 &994701948
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994701928}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -1.28}
+  m_Size: {x: 3.55, y: 2}
+  m_Direction: 1
 --- !u!1 &1005524552
 GameObject:
   m_ObjectHideFlags: 0
@@ -3344,6 +3387,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bud: {fileID: 967940046119120425, guid: 15cd7499f7365494bab9ea3647e36302, type: 3}
+  boss: {fileID: 994701928}
+  distanceToBoss: 5
   budLeft: 5
   groundLevel: -17.59
   leftBound: -10

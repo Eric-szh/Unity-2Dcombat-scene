@@ -56,6 +56,10 @@ public class MeleeState : State
         {
             playerHit.GetComponent<PlayerBehavior>().TakeDamage(30);
             GetComponent<BossBehavior>().PushPlayerAway(attackPoint.transform.position, 0.7f, 1f);
+        } else
+        {
+            // Debug.Log("Miss");
+            GetComponent<DecideState>().Miss();
         }
         
     }

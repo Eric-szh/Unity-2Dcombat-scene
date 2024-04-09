@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     public float DarkenTime = 1f;
     public float LightenTime = 1f;
     public float MaximumOpacity = 0.7f;
+    public float DotInterval = 0.1f;
     float opacity = 0;
     bool isDark = false;
 
@@ -24,6 +25,7 @@ public class GameController : MonoBehaviour
     {
         isDark = true;
         StartCoroutine(DarkenScreen());
+        StartCoroutine(Dot());
     }
 
     IEnumerator DarkenScreen()
@@ -37,6 +39,16 @@ public class GameController : MonoBehaviour
         }
         yield break;
 
+    }
+
+    IEnumerator Dot()
+    {
+        while (isDark)
+        {
+            yield return new WaitForSeconds(DotInterval);
+            player.GetComponent<PlayerBehavior>().TakeDamage(2, 0, true, 0);
+        }
+        yield break;
     }
 
     public void Lighten()
@@ -64,10 +76,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isDark)
-        {
-            player.GetComponent<PlayerBehavior>().TakeDamage(1, 0, true);
-        }
+
     }
 
     public void WinGame()
