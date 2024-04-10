@@ -241,7 +241,7 @@ public class PlayerBehavior : MonoBehaviour
         {
             GameObject amulet = GameObject.Find("Amulet");
             int charges = amulet.GetComponent<AmuletController>().currentState;
-            if (charges == 4)
+            if (charges >= 4)
             {
                 amulet.GetComponent<AmuletController>().Use();
                 this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_bloom");

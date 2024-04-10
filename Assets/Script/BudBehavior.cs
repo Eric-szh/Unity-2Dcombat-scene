@@ -16,7 +16,7 @@ public class BudBehavior : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && isGrown)
         {
-            Debug.Log("Bloom");
+            // Debug.Log("Bloom");
             Bloom();
             GameObject.Find("Amulet").GetComponent<AmuletController>().Progress();
         } else if (collision.gameObject.tag == "Boss" && isGrown)
