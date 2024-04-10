@@ -11,21 +11,25 @@ public class GameController : MonoBehaviour
     public float DarkenTime = 1f;
     public float LightenTime = 1f;
     public float MaximumOpacity = 0.7f;
-    public float DotInterval = 0.1f;
+    public float DotInterval = 0.5f;
     public float TimeAfterDark = 2f;
+    public float PreventionTime = 2f;
     float opacity = 0;
     bool isDark = false;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    bool preventDark = false;
 
     public void Darken()
     {
-        StartCoroutine(DarkenScreen());
-        Invoke("StartDot", TimeAfterDark);
+        if (!preventDark)
+        {
+            StartCoroutine(DarkenScreen());
+            Invoke("StartDot", TimeAfterDark);
+        } else
+        {
+            preventDark = false;
+            Debug.Log("Dark prevented");
+        }
+
     }
 
     IEnumerator DarkenScreen()
@@ -63,7 +67,19 @@ public class GameController : MonoBehaviour
             StopCoroutine(DarkenScreen());
             isDark = false;
             StartCoroutine(LightenScreen());
+            Debug.Log("Stop dark");
+        } else
+        {
+            preventDark = true;
+            Invoke("StopPreventDark", PreventionTime);
+            Debug.Log("Prevent dark");
         }
+    }
+
+    void StopPreventDark()
+    {
+        Debug.Log("Prevent dark stopped");
+        preventDark = false;
     }
 
     IEnumerator LightenScreen()

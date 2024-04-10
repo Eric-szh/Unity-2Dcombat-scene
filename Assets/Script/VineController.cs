@@ -41,12 +41,17 @@ public class VineController : MonoBehaviour
         }
     }
 
+    public void DamageStart()
+    {
+        GetComponent<Collider2D>().enabled = true;
+    }
 
 
     public void DisableVine()
     {
         this.transform.position = hidePoint.position;
         GetComponent<Animator>().Play("Stop");
+        GetComponent<Collider2D>().enabled = false;
     }
 
  
