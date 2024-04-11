@@ -24,8 +24,17 @@ public class FeetBehavior : MonoBehaviour
         
         if ((collision.gameObject.tag == "Land"))
         {
-            Debug.Log("Feet hit something!");
+            // Debug.Log("Feet hit something!");
             this.transform.parent.GetComponent<PlayerBehavior>().Land();
+            isGrounded = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if ((collision.gameObject.tag == "Land"))
+        {
+            // Debug.Log("Feet is on something!");
             isGrounded = true;
         }
     }
@@ -34,7 +43,7 @@ public class FeetBehavior : MonoBehaviour
     {
         if ((collision.gameObject.tag == "Land"))
         {
-            Debug.Log("Feet left something!");
+            // Debug.Log("Feet left something!");
             isGrounded = false;
         }
     }
