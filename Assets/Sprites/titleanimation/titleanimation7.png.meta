@@ -128,7 +128,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      titleanimation7_0: 4983959464315118379
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

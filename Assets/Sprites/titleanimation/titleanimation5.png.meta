@@ -128,7 +128,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      titleanimation5_0: -4616384520454535374
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

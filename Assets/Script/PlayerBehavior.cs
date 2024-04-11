@@ -227,12 +227,14 @@ public class PlayerBehavior : MonoBehaviour
         //dashing
         if (Input.GetButtonDown("Dash") && !this.paralyzed)
         {
-            if (this.availableDashes > 0)
-            {
+           
+            if (this.availableDashes > 0 && !isDashing)
+            {   
                 this.PlayDirBased("Player_dashL", "Player_dashR");
                 StartCoroutine(Dash(xDirection));
                 if (in_air)
-                    this.availableDashes--;
+
+                    this.availableDashes = 0;
             }
             
         }
@@ -333,7 +335,7 @@ public class PlayerBehavior : MonoBehaviour
         in_air = false;
         this.availableJumps = this.maxJumps;
         this.availableDashes = this.maxDashes;
-
+    
         // Debug.Log("Player landed");
         float jump_counter = this.availableJumps;
     }
