@@ -5,6 +5,7 @@ using UnityEngine;
 public class BudBehavior : MonoBehaviour
 {
     bool isGrown = false;
+    public int healAmount = 30;
     GameObject amulet;
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,8 @@ public class BudBehavior : MonoBehaviour
             // Debug.Log("Bloom");
             Bloom();
             GameObject.Find("Amulet").GetComponent<AmuletController>().Progress();
+            // heal the player
+            collision.gameObject.GetComponent<PlayerBehavior>().Heal(healAmount);
         } else if (collision.gameObject.tag == "Boss" && isGrown)
         {
             Corrupt();

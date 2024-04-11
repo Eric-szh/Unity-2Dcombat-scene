@@ -50,6 +50,16 @@ public class PlayerBehavior : MonoBehaviour
         this.isAttacking = false;
     }
 
+    public void Heal(int healAmount)
+    {
+        this.health += healAmount;
+        if (this.health > this.maxHealth)
+        {
+            this.health = this.maxHealth;
+        }
+        healthBar.SetHealth(health);
+    }
+
     public void TakeDamage(int damage, float paralyze_time = 0.2f, bool ignoreInv = false, float invincible_time = 3f)
     {
 

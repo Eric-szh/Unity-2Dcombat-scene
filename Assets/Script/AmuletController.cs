@@ -33,7 +33,7 @@ public class AmuletController : MonoBehaviour
 
     public void Use()
     {
-        if (currentState == 4)
+        if (currentState >= 4)
         {
             GetComponent<AniController>().ChangeAnimationState("amu_use");
             currentState = 0;

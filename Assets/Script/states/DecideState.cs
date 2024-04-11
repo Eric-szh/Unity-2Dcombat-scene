@@ -27,7 +27,7 @@ public class DecideState : State
 
     public override void Enter()
     {
-        Debug.Log("Decide");
+        // Debug.Log("Decide");
         GetComponent<BossAniController>().ChangeAnimationState("Boss_idle");
         Invoke("Decide", waitTime);
     }
@@ -56,7 +56,7 @@ public class DecideState : State
         } 
         else if (missCount >= triggerMiss)
         {
-            Debug.Log("Hard");
+            // Debug.Log("Hard");
             Hard();
         } 
         else if (Random.Range(0, 100) < fogRatio && !lastFog)

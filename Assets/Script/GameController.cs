@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
     {
         if (!preventDark)
         {
+            isDark = true;
             StartCoroutine(DarkenScreen());
             Invoke("StartDot", TimeAfterDark);
         } else
@@ -57,23 +58,15 @@ public class GameController : MonoBehaviour
 
     void StartDot()
     {
-        isDark = true;
         StartCoroutine(Dot());
     }
 
     public void Lighten()
     {
-        if (isDark) { 
-            StopCoroutine(DarkenScreen());
-            isDark = false;
-            StartCoroutine(LightenScreen());
-            Debug.Log("Stop dark");
-        } else
-        {
-            preventDark = true;
-            Invoke("StopPreventDark", PreventionTime);
-            Debug.Log("Prevent dark");
-        }
+        preventDark = true;
+        Invoke("StopPreventDark", PreventionTime);
+        Debug.Log("Prevent dark");
+
     }
 
     void StopPreventDark()
@@ -98,7 +91,16 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (isDark)
+        {
+            if (preventDark)
+            {
+                StopCoroutine(DarkenScreen());
+                isDark = false;
+                StartCoroutine(LightenScreen());
+                Debug.Log("Stop dark manual check");
+            }
+        }
     }
 
     public void WinGame()

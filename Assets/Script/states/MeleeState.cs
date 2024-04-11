@@ -15,7 +15,7 @@ public class MeleeState : State
 
     public override void Enter()
     {
-        Debug.Log("Melee State");
+        // Debug.Log("Melee State");
         if (GetComponent<BossBehavior>().facingDirection == 1)
         {
             GetComponent<BossAniController>().ChangeAnimationState("Boss_slashR");
