@@ -11,9 +11,11 @@ public class FogState : State
     public float devationRange = 0.02f;
 
     private Vector2 chargePoint;
+    private bool canCharge;
 
     public override void Enter()
     {
+        canCharge = false;
         GetComponent<BossBehavior>().TurnToPlayer();
         if (GetComponent<BossBehavior>().facingDirection == 1)
         {
@@ -37,7 +39,18 @@ public class FogState : State
 
     public override void Tick()
     {
-       GetComponent<BossBehavior>().MoveTo(chargePoint, chargeSpeed);
+        if (canCharge)
+        {
+            GetComponent<BossBehavior>().MoveTo(chargePoint, chargeSpeed);
+        }
+    }
+
+    public void Charge()
+    {
+        if (!canCharge)
+        {
+            canCharge = true;
+        }
     }
 
     public void FogLeave()
@@ -47,6 +60,10 @@ public class FogState : State
 
     public void FogAppear()
     {
+        if (!canCharge)
+        {
+            return;
+        }
         Transform localPosition = this.GetComponent<Transform>();
         float xDivation = Random.Range(-this.devationRange, this.devationRange);
         float yDivation = Random.Range(-this.devationRange, this.devationRange);

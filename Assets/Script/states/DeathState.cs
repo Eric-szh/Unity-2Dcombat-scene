@@ -13,6 +13,8 @@ public class DeathState : State
     public override void Enter()
     {
         Debug.Log("Enter Death");
+        GetComponent<Collider2D>().isTrigger = true;
+        GetComponent<Rigidbody2D>().gravityScale = 0;
         GetComponent<BossAniController>().ChangeAnimationState("Boss_death");
     }
 

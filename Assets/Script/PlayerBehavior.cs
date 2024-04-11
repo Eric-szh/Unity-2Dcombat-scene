@@ -44,6 +44,7 @@ public class PlayerBehavior : MonoBehaviour
     public int attackDamage = 10;
 
     public GameObject gameController;
+    public GameObject feet;
 
     public void AttackInterrpution()
     {
@@ -204,7 +205,6 @@ public class PlayerBehavior : MonoBehaviour
         {
             if (this.availableJumps > 0)
             {   
-                in_air = true;
                 this.PlayDirBased("Player_jumpL", "Player_jumpR", true);
 
                 //resets the gravity if the player is currently dashing
@@ -222,21 +222,20 @@ public class PlayerBehavior : MonoBehaviour
         }
         
         // Debug.Log(Input.GetAxis("Dash"));
-        // Debug.Log(Input.GetAxis("Dash"));
 
         //dashing
         if (Input.GetButtonDown("Dash") && !this.paralyzed)
-        {
-           
+        {   
+            Debug.Log(this.availableDashes);
             if (this.availableDashes > 0 && !isDashing)
             {   
                 this.PlayDirBased("Player_dashL", "Player_dashR");
-                StartCoroutine(Dash(xDirection));
+                StartCoroutine(Dash(this.facingDirection));
                 if (in_air)
-
+                {
                     this.availableDashes = 0;
+                }
             }
-            
         }
 
         //attacking
@@ -278,8 +277,10 @@ public class PlayerBehavior : MonoBehaviour
             {
                 this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_idle");
             }
-            
         }
+
+        // update in_air status
+        this.in_air = !this.feet.GetComponent<FeetBehavior>().isGrounded;
 
     }
 
@@ -332,7 +333,6 @@ public class PlayerBehavior : MonoBehaviour
     }
 
     public void Land() { 
-        in_air = false;
         this.availableJumps = this.maxJumps;
         this.availableDashes = this.maxDashes;
     

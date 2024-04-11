@@ -96,6 +96,7 @@ public class BossBehavior : MonoBehaviour
 
         this.Health -= damage;
         Debug.Log("Boss took " + damage + " damage");
+        Flash();
         if (this.Health <= 0)
         {
             this.GetComponent<BossStateMachine>().ChangeState<DeathState>();
@@ -103,7 +104,6 @@ public class BossBehavior : MonoBehaviour
         }
         else
         {
-            Flash();
             if (this.Health <= this.maxHealth * 0.6 && !secondPhase)
             {
                 GameObject.Find("BudController").GetComponent<BudController>().SpawnBud();
