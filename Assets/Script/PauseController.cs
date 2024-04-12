@@ -10,7 +10,7 @@ public class PauseController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        bgm = GameObject.Find("BGM");
     }
 
     // Update is called once per frame
