@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class ClickEnter : MonoBehaviour
+public class GoTutorial : MonoBehaviour
 {
-    public GameObject bgmObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,10 +16,8 @@ public class ClickEnter : MonoBehaviour
         
     }
 
-    private void OnMouseDown()
+    public void GoToTutorial()
     {
-        Debug.Log("Mouse Down");
-        SceneManager.LoadScene("BossLevel");
-        GameObject.Destroy(bgmObject);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Tutorial");
     }
 }
