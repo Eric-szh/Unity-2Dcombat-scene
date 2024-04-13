@@ -19,22 +19,15 @@ public class BudController : MonoBehaviour
     }
 
     public void SpawnBud() {         
-        if (budLeft > 0)
+
+        Vector2 position = new Vector2(Random.Range(leftBound, rightBound), groundLevel);
+        while(Vector2.Distance(position, boss.transform.position) < distanceToBoss)
         {
-            Vector2 position = new Vector2(Random.Range(leftBound, rightBound), groundLevel);
-            while(Vector2.Distance(position, boss.transform.position) < distanceToBoss)
-            {
-                position = new Vector2(Random.Range(leftBound, rightBound), groundLevel);
-            }
-            Instantiate(bud, position, Quaternion.identity);
-            budLeft--;
-            float time = Random.Range(5.0f, 10.0f);
-            Invoke("SpawnBud", time);
+            position = new Vector2(Random.Range(leftBound, rightBound), groundLevel);
         }
-        else
-        {
-            ultReady = true;
-            Debug.Log("Ultimate Ready");
-        }
+        Instantiate(bud, position, Quaternion.identity);
+        budLeft--;
+
+
     }
 }

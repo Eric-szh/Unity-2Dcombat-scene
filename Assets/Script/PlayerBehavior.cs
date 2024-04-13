@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using Unity.Burst.CompilerServices;
 using UnityEditor;
 using UnityEngine;
@@ -36,6 +37,7 @@ public class PlayerBehavior : MonoBehaviour
     bool slowed = false;
     bool entangled = false;
     bool bloomed = false;
+    bool jumping = false;
     public bool death = false;
 
     bool isAttacking = false;
@@ -219,7 +221,7 @@ public class PlayerBehavior : MonoBehaviour
                 float jump_counter = this.availableJumps;
                 this.GetComponent<Animator>().SetFloat("jump_counter", jump_counter);
 
-
+                this.jumping = true;
                 this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, this.jumpForce), ForceMode2D.Impulse);
             }
         }
@@ -247,6 +249,7 @@ public class PlayerBehavior : MonoBehaviour
             if (!isAttacking)
             {
                 isAttacking = true;
+                jumping = false;
                 this.PlayDirBased("Player_slashL", "Player_slashR");
             }
         }
@@ -267,12 +270,17 @@ public class PlayerBehavior : MonoBehaviour
         }
 
         // animation stuff
-        if (!in_air && !isDashing && !entangled && !isAttacking && !bloomed && !paralyzed)
+        if (!jumping && !isDashing && !entangled && !isAttacking && !bloomed && !paralyzed && in_air)
         {
-            if(xDirection == 1)
+            PlayDirBased("Player_fallL", "Player_fallR");
+        } 
+        else if (!jumping && !isDashing && !entangled && !isAttacking && !bloomed && !paralyzed && !in_air)
+        {
+            if (xDirection == 1)
             {
                 this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_right");
-            } else if (xDirection == -1)
+            }
+            else if (xDirection == -1)
             {
                 this.GetComponent<PlayerAniController>().ChangeAnimationState("Player_left");
             }
@@ -338,6 +346,7 @@ public class PlayerBehavior : MonoBehaviour
     public void Land() { 
         this.availableJumps = this.maxJumps;
         this.availableDashes = this.maxDashes;
+        this.jumping = false;
     
         // Debug.Log("Player landed");
         float jump_counter = this.availableJumps;

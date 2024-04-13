@@ -15,10 +15,23 @@ public class BossBehavior : MonoBehaviour
     public int Health = 200;
     public int maxHealth = 200;
 
-    private bool secondPhase = false;
     private bool isDead = false;
 
     public GameObject gameController;
+
+    private bool bud1 = false;
+    private float bud1Ratio = 0.6f;
+    private bool bud2 = false;
+    private float bud2Ratio = 0.5f;
+    private bool bud3 = false;
+    private float bud3Ratio = 0.4f;
+    private bool bud4 = false;
+    private float bud4Ratio = 0.3f;
+    private bool bud5 = false;
+    private float bud5Ratio = 0.2f;
+    private bool canUlt = false;
+    private float ultRatio = 0.15f;
+
 
     public void TurnToPlayer()
     {
@@ -104,10 +117,35 @@ public class BossBehavior : MonoBehaviour
         }
         else
         {
-            if (this.Health <= this.maxHealth * 0.6 && !secondPhase)
+            if (this.Health <= this.maxHealth * bud1Ratio && !bud1)
             {
                 GameObject.Find("BudController").GetComponent<BudController>().SpawnBud();
-                secondPhase = true;
+                bud1 = true;
+            } 
+            if (this.Health <= this.maxHealth * bud2Ratio && !bud2)
+            {
+                GameObject.Find("BudController").GetComponent<BudController>().SpawnBud();
+                bud2 = true;
+            }
+            if (this.Health <= this.maxHealth * bud3Ratio && !bud3)
+            {
+                GameObject.Find("BudController").GetComponent<BudController>().SpawnBud();
+                bud3 = true;
+            }
+            if (this.Health <= this.maxHealth * bud4Ratio && !bud4)
+            {
+                GameObject.Find("BudController").GetComponent<BudController>().SpawnBud();
+                bud4 = true;
+            }
+            if (this.Health <= this.maxHealth * bud5Ratio && !bud5)
+            {
+                GameObject.Find("BudController").GetComponent<BudController>().SpawnBud();
+                bud5 = true;
+            }
+            if (this.Health <= this.maxHealth * ultRatio && !canUlt)
+            {
+                GameObject.Find("BudController").GetComponent<BudController>().ultReady = true;
+                canUlt = true;
             }
         }
 
